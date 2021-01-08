@@ -38,16 +38,14 @@ var auditTask = function(task){
     if (hour < 6){
         hour += 12
     };
-    console.log(hour)
 
     //convert to moment opject
     var time = moment().set("hour", hour).set("minute", 0).format("LLL")
-    console.log(time)
   
     // remove any old classes from element
     $(task).parent('div').removeClass("list-group-item-success list-group-item-warning list-group-item-danger list-group-item-dark");
   
-    // apply new class if task is near/over due date
+    // apply new class to parent div if task is near/over due date
     if (Math.abs(moment().diff(time, "hours", true)) <= 1 && (moment().diff(time, "hours", true)) < 0) {
         $(task).parent('div').addClass("list-group-item-warning");
     }
@@ -62,4 +60,4 @@ var auditTask = function(task){
     }
 }
 
-createTask('Test','6pm');
+createTask('Test','2pm');
