@@ -86,7 +86,7 @@ var saveTasks = function(task){
 
 var loadTasks = function() {
     dayTasks = JSON.parse(localStorage.getItem("dayTasks"));
-    console.log(dayTasks)
+    
 
     // if nothing in localStorage, create a new object to track all task status arrays
     if (!dayTasks) {
