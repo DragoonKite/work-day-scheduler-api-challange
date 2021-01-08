@@ -57,26 +57,27 @@ $("div").on("click", "p", function() {
     textInput.trigger("focus");
 });
 
-//task info no longer in focus
+//checkmark button clicked
 $("div").on("click", ".btnWrapper", function(){
-  // get the textarea's current value/text
-  var text = $('.form-control')
-  .val()
+    event.stopImmediatePropagation();
+    // get the textarea's current value/text
+    var text = String($('.form-control')
+    .val());
 
-  // get the id attribute
-  var hour = String($('.form-control').parent()
-  .attr("id"))
+    // get the id attribute
+    var hour = String($('.form-control').parent()
+    .attr("id"));
 
-  // recreate p element
-  var taskP = $("<p>")
-  .attr("id", hour)
-  .text(text);
+    // recreate p element
+    var taskP = $("<p>")
+    .attr("id", hour)
+    .text(text);
 
-  // replace textarea with p element
-  $('.form-control').replaceWith(taskP);
-  dayTasks[hour] = ({task: text, id: hour});
-  auditTask(taskP);
-  saveTasks(dayTasks);
+    // replace textarea with p element
+    $('.form-control').replaceWith(taskP);
+    dayTasks[hour] = ({task: text, id: hour});
+    saveTasks(dayTasks);
+    console.log(dayTasks);
 });
 
 var saveTasks = function(task){
@@ -89,7 +90,7 @@ var loadTasks = function() {
 
     // if nothing in localStorage, create a new object to track all task status arrays
     if (!dayTasks) {
-            dayTasks = {
+        dayTasks = {
             '9am': [],
             '10am': [],
             '11am': [],
@@ -98,8 +99,8 @@ var loadTasks = function() {
             '2pm': [],
             '3pm': [],
             '4pm': [],
-            '5pm': [],
-        }
+            '5pm': []
+        };
     }
 
     // loop over object properties
@@ -109,10 +110,11 @@ var loadTasks = function() {
         }
         else{
             task.text=$(this)['task'];
-            console.log(task.text)
+            console.log(task.text);
             task.time=$(this)['id'];
+            console.log(task.time);
             createTask(task.text, task.time);
-        }
+        };
         
     });
 };   
