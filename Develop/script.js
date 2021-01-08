@@ -2,13 +2,14 @@
 var currentDay = moment().format('dddd, MMMM Do');
 $("#currentDay").html(currentDay);
 
-var dayTasks = []
+var dayTasks = {};
 
 var createTask = function(taskText, taskTime){
     var task = $('<p>').attr('id',taskTime).html(taskText);
     $("#"+taskTime).html(task);
-    dayTasks.push(task);
-    auditTask(task)
+    dayTasks[taskTime] = ({task: taskText, id: taskTime});
+    auditTask(task);
+    saveTasks(dayTasks);
 };
 
 var auditTask = function(task){
@@ -57,15 +58,14 @@ $("div").on("click", "p", function() {
 });
 
 //task info no longer in focus
-$("div").on("blur", "textarea", function(){
+$("div").on("click", ".btnWrapper", function(){
   // get the textarea's current value/text
-  var text = $(this)
+  var text = $('.form-control')
   .val()
-  .trim();
 
   // get the id attribute
-  var hour = $(this)
-  .attr("id")
+  var hour = String($('.form-control').parent()
+  .attr("id"))
 
   // recreate p element
   var taskP = $("<p>")
@@ -73,9 +73,13 @@ $("div").on("blur", "textarea", function(){
   .text(text);
 
   // replace textarea with p element
-  $(this).replaceWith(taskP);
+  $('.form-control').replaceWith(taskP);
+  dayTasks[hour] = ({task: text, id: hour});
+  auditTask(taskP);
+  saveTasks(dayTasks);
 });
-/* var saveTasks = function(task){
+
+var saveTasks = function(task){
     localStorage.setItem('dayTasks', JSON.stringify(task))
 }
 
@@ -85,15 +89,32 @@ var loadTasks = function() {
 
     // if nothing in localStorage, create a new object to track all task status arrays
     if (!dayTasks) {
-        dayTasks = []
+            dayTasks = {
+            '9am': [],
+            '10am': [],
+            '11am': [],
+            '12pm': [],
+            '1pm': [],
+            '2pm': [],
+            '3pm': [],
+            '4pm': [],
+            '5pm': [],
+        }
     }
 
     // loop over object properties
-    $.each(dayTasks, function(task) {
-        task.text=$(this)['text'].value;
-        task.time=$(this)['time'].value;
-        createTask(task.text, task.time);
+    $.each(dayTasks, function(task){
+        if(!Array.isArray(task)){
+            createTask(" ", String(task))
+        }
+        else{
+            task.text=$(this)['task'];
+            console.log(task.text)
+            task.time=$(this)['id'];
+            createTask(task.text, task.time);
+        }
+        
     });
-};   */
+};   
 
-createTask('Test','2pm');
+loadTasks();
