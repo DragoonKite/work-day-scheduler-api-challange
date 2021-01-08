@@ -11,27 +11,6 @@ var createTask = function(taskText, taskTime){
     auditTask(task)
 };
 
-/* var saveTasks = function(task){
-    localStorage.setItem('dayTasks', JSON.stringify(task))
-}
-
-var loadTasks = function() {
-    dayTasks = JSON.parse(localStorage.getItem("dayTasks"));
-    console.log(dayTasks)
-
-    // if nothing in localStorage, create a new object to track all task status arrays
-    if (!dayTasks) {
-        dayTasks = []
-    }
-
-    // loop over object properties
-    $.each(dayTasks, function(task) {
-        task.text=$(this)['text'].value;
-        task.time=$(this)['time'].value;
-        createTask(task.text, task.time);
-    });
-};   */
-
 var auditTask = function(task){
     // get hour from task element
     var hour = parseInt($(task).attr("id").replace("am", "").replace("pm", ""))
@@ -59,5 +38,62 @@ var auditTask = function(task){
         $(task).parent('div').addClass("list-group-item-dark");
     }
 }
+
+//task info was clicked
+$("div").on("click", "p", function() {
+    //reads current text from paragraph
+    var text = $(this)
+    .text()
+    .trim();
+  
+    //creates a new text area with the current text (memory only)
+    var textInput = $("<textarea>")
+    .addClass("form-control")
+    .val(text);
+  
+    //switches out the old text with new text area
+    $(this).replaceWith(textInput);
+    textInput.trigger("focus");
+});
+
+//task info no longer in focus
+$("div").on("blur", "textarea", function(){
+  // get the textarea's current value/text
+  var text = $(this)
+  .val()
+  .trim();
+
+  // get the id attribute
+  var hour = $(this)
+  .attr("id")
+
+  // recreate p element
+  var taskP = $("<p>")
+  .attr("id", hour)
+  .text(text);
+
+  // replace textarea with p element
+  $(this).replaceWith(taskP);
+});
+/* var saveTasks = function(task){
+    localStorage.setItem('dayTasks', JSON.stringify(task))
+}
+
+var loadTasks = function() {
+    dayTasks = JSON.parse(localStorage.getItem("dayTasks"));
+    console.log(dayTasks)
+
+    // if nothing in localStorage, create a new object to track all task status arrays
+    if (!dayTasks) {
+        dayTasks = []
+    }
+
+    // loop over object properties
+    $.each(dayTasks, function(task) {
+        task.text=$(this)['text'].value;
+        task.time=$(this)['time'].value;
+        createTask(task.text, task.time);
+    });
+};   */
 
 createTask('Test','2pm');
