@@ -85,7 +85,9 @@ var saveTasks = function(task){
 }
 
 var loadTasks = function() {
+    console.log(dayTasks);
     dayTasks = JSON.parse(localStorage.getItem("dayTasks"));
+    console.log(dayTasks);
     
 
     // if nothing in localStorage, create a new object to track all task status arrays
@@ -101,22 +103,19 @@ var loadTasks = function() {
             '4pm': [],
             '5pm': []
         };
-    }
+        saveTasks(dayTasks);
+    } 
 
     // loop over object properties
-    $.each(dayTasks, function(task){
-        if(!Array.isArray(task)){
-            createTask(" ", String(task))
+    $.each(dayTasks, function(hour, arr){
+        //checks if arry is empty. Sets task to a blank space first time the page is opened/ or if local storage has been cleared
+        if(arr.length === 0){
+            createTask(" ", String(hour))
         }
         else{
-            task.text=$(this)['task'];
-            console.log(task.text);
-            task.time=$(this)['id'];
-            console.log(task.time);
-            createTask(task.text, task.time);
+            createTask(arr.task, hour);
         };
-        
-    });
+    });  
 };   
 
 loadTasks();
