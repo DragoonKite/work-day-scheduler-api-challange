@@ -2,6 +2,7 @@
 var currentDay = moment().format('dddd, MMMM Do');
 $("#currentDay").html(currentDay);
 
+
 var dayTasks = {};
 
 var createTask = function(taskText, taskTime){
@@ -83,14 +84,18 @@ $("div").on("click", ".btnWrapper", function(){
 });
 
 var saveTasks = function(task){
-    localStorage.setItem('dayTasks', JSON.stringify(task))
+    localStorage.setItem('dayTasks', JSON.stringify(task));
+    localStorage.setItem('currentDay', JSON.stringify(moment()));
 }
 
 var loadTasks = function() {
     dayTasks = JSON.parse(localStorage.getItem("dayTasks"));
-    
-    // if nothing in localStorage, create a new object to track all task status arrays
-    if (!dayTasks) {
+    //checks to see if the day has changed since the last time the user modified data
+    var lastDay = String(JSON.parse(localStorage.getItem('currentDay')));
+    var dayChange = moment().diff(moment(lastDay), 'days');
+
+    // if nothing in localStorage or the day has changed, create an empty object to track all task status arrays for the day
+    if (!dayTasks || dayChange != 0) {
         dayTasks = {
             '9am': [],
             '10am': [],
