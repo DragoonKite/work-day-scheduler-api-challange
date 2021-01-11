@@ -78,7 +78,7 @@ $("div").on("click", ".btnWrapper", function(){
     .text(text);
 
     // replace textarea with p element
-    $('.form-control').replaceWith(taskP);
+    $('#'+ hour + '> .form-control').replaceWith(taskP);
     dayTasks[hour] = ({task: text, id: hour});
     saveTasks(dayTasks);
     console.log(dayTasks);
