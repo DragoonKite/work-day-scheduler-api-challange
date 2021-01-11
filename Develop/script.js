@@ -64,6 +64,10 @@ $("div").on("click", ".btnWrapper", function(){
     var text = String($('.form-control')
     .val());
 
+    if(text === "" || text === "\n"){
+        text = " ";
+    }
+
     // get the id attribute
     var hour = String($('.form-control').parent()
     .attr("id"));
@@ -85,11 +89,8 @@ var saveTasks = function(task){
 }
 
 var loadTasks = function() {
-    console.log(dayTasks);
     dayTasks = JSON.parse(localStorage.getItem("dayTasks"));
-    console.log(dayTasks);
     
-
     // if nothing in localStorage, create a new object to track all task status arrays
     if (!dayTasks) {
         dayTasks = {
@@ -118,4 +119,23 @@ var loadTasks = function() {
     });  
 };   
 
+var timeToNextHour = 0;
+var setTimer = function(){
+    //set duration for interval equal to time poage was accessed and the next hour
+    timeToNextHour = moment().add(1, 'h').seconds(0).minutes(0).diff(moment())
+    console.log(timeToNextHour);
+}
+
+//updates the tasks color every hour on the hour
+function autoUpdate(){
+    setTimeout(function(){
+        $(".col-9 .description").each(function(hour){
+            auditTask(hour);
+        });
+        setTimer();
+        autoUpdate();
+    },timeToNextHour);
+};
+
 loadTasks();
+autoUpdate();
