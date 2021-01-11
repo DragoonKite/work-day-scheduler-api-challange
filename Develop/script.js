@@ -121,14 +121,13 @@ var timeToNextHour = 0;
 var setTimer = function(){
     //set duration for interval equal to time poage was accessed and the next hour
     timeToNextHour = moment().add(1, 'h').seconds(0).minutes(0).diff(moment())
-    console.log(timeToNextHour);
 }
 
 //updates the tasks color every hour on the hour
 function autoUpdate(){
     setTimeout(function(){
-        $(".col-9 .description").each(function(hour){
-            auditTask(hour);
+        $("div.col-9 > p").each(function(hour){
+            auditTask(this);
         });
         setTimer();
         autoUpdate();
