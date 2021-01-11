@@ -61,16 +61,14 @@ $("div").on("click", "p", function() {
 $("div").on("click", ".btnWrapper", function(){
     event.stopImmediatePropagation();
     // get the textarea's current value/text
-    var text = String($('.form-control')
-    .val());
+    var text = String($(this).closest('div.row').find('div.col-9 > .form-control').val());
 
     if(text === "" || text === "\n"){
         text = " ";
     }
 
     // get the id attribute
-    var hour = String($('.form-control').parent()
-    .attr("id"));
+    var hour = String($(this).closest('div.row').find('div.col-9').attr('id'));
 
     // recreate p element
     var taskP = $("<p>")
