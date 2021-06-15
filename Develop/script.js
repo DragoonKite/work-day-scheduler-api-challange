@@ -27,10 +27,7 @@ var auditTask = function(task){
     $(task).parent('div').removeClass("list-group-item-success list-group-item-warning list-group-item-danger list-group-item-dark");
   
     // apply new class to parent div if task is near/over due date
-    if (Math.abs(moment().diff(time, "hours", true)) <= 1 && (moment().diff(time, "hours", true)) < 0) {
-        $(task).parent('div').addClass("list-group-item-warning");
-    }
-    else if (Math.abs(moment().diff(time, "hours")) === 0) {
+    if (Math.abs(moment().diff(time, "hours")) === 0) {
         $(task).parent('div').addClass("list-group-item-danger");
     }
     else if (moment().isBefore(time)) {
@@ -105,7 +102,7 @@ var loadTasks = function() {
             '2pm': [],
             '3pm': [],
             '4pm': [],
-            '5pm': []
+            '5pm': [],
         };
         saveTasks(dayTasks);
     } 
